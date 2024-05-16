@@ -1,0 +1,65 @@
+.hover-box::before {
+  animation: mouse-exit 500ms forwards;
+}
+
+.hover-box:hover::before {
+  animation: mouse-enter 500ms forwards;
+  background-color: blue;
+}
+
+/* .hover-box {
+  --x: 0;
+  --y: 0;
+} */
+
+@keyframes mouse-enter {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: var(--x) var(--y);
+  }
+}
+
+@keyframes mouse-exit {
+  from {
+    translate: var(--x) var(--y);
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@layer general-styling {
+  /* html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-block-size: 100svh;
+    display: grid;
+  } */
+
+  .hover-box {
+    display: grid;
+    width: 320px; /*min(600px, 70%);*/
+    margin: auto;
+    aspect-ratio: 1;
+    border: 3px solid hsl(200, 100%, 50%);
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem hsl(200, 100%, 70%),
+      inset 0 0 0.5rem hsl(200, 100%, 70%);
+    overflow: hidden;
+  }
+
+  .hover-box::before {
+    content: "";
+    display: block;
+    width: clamp(10px, 15%, 50px);
+    aspect-ratio: 1;
+    margin: auto;
+    border-radius: 50%;
+    background: hsl(340 60% 50%);
+    box-shadow: 0 0 0.5rem hsl(340 60% 60%);
+  }
+}
