@@ -1,13 +1,16 @@
-import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
-import { createContext, PropsWithChildren, useContext } from 'react';
-import { IKeyValue } from '~/config/types';
-import { ITableConfig } from '~/data/types';
+import { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
+// import { sortingColumnDef } from '~/config/columns';
+import { IKeyValue, TRenderFunc } from '~/config/types';
+import { ITableConfig } from '~/config/types';
+import { getColumnDefs } from '~/helpers/column.helper';
 
 interface IDataContext {
   tableConfig?: ITableConfig;
   getData: (payload?: IGetDataPayload) => Promise<IKeyValue[]>;
 }
 const DataContext = createContext<IDataContext>({
+  getData: () => Promise.resolve([]),
 });
 
 export interface ISort {
@@ -33,13 +36,19 @@ interface IDataProviderProps extends PropsWithChildren {
   getData: (payload?: IGetDataPayload) => Promise<IKeyValue[]>;
 }
 
-export const useTableData = (tableConfig: ITableConfig) => {
+export const useTableData = (tableConfig: ITableConfig, renderers: any[]) => {
   const { getData } = useContext(DataContext);
+  const columnDefs: ColumnDef<IKeyValue>[] = useMemo( () => {
+    return getColumnDefs({tableConfig, renderers});
+  }, [tableConfig]);
+  
   return {
     tableConfig,
+    columnDefs,
     getData
   };
 }
+
 export const DataProvider = ({ children, getData }: IDataProviderProps) => {
   return (
     <DataContext.Provider value={{ getData }}>{children}</DataContext.Provider>

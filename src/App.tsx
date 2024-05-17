@@ -10,11 +10,13 @@ import { DataProvider, IGetDataPayload } from './hooks/useTableData';
 import { IKeyValue } from './config/types';
 import dataJSON from './data/data.json';
 import { SortingState } from '@tanstack/react-table';
+import { useMemo } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 const doSorting = async (data: IKeyValue[], sorting: SortingState): Promise<IKeyValue[]> => {
   if (sorting.length > 0) {
     const sortItem = sorting[0]
-    console.log('updated: ', JSON.stringify(sorting, null, 2))
+    // console.log('updated: ', JSON.stringify(sorting, null, 2))
     const sortedData = data.sort((data1, data2) => {
       const key = sortItem.id as keyof typeof data1
       let swap = 0
@@ -34,6 +36,15 @@ const doSorting = async (data: IKeyValue[], sorting: SortingState): Promise<IKey
 }
 
 function App() {
+    const [tableConfigStr, setTableConfigStr] = useLocalStorage(
+      'tableConfig',
+      JSON.stringify(tableConfig)
+    )
+
+    const activeTableConfig = useMemo(() => {
+      return JSON.parse(tableConfigStr)
+    }, [tableConfigStr])
+
   // const [count, setCount] = useState(0)
 
   const getData = async (payload?: IGetDataPayload): Promise<IKeyValue[]> => {
@@ -49,7 +60,6 @@ function App() {
 
     // pagination
 
-    
     return data
   }
 
@@ -57,7 +67,7 @@ function App() {
     <div className="w-screen h-screen bg-green-200 flex flex-col">
       {/* <BasicTable/> */}
       <DataProvider getData={getData}>
-        <SortingTable tableConfig={tableConfig}/>
+        <SortingTable tableConfig={activeTableConfig} />
       </DataProvider>
     </div>
   )

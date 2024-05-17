@@ -20,7 +20,7 @@ export interface ITableConfig {
   fieldIds?: string[];
   fieldConfigs: IFieldConfig[];
   headerGroups: IHeaderGroup[];
-  rowSize: DensityState;
+  rowSize?: DensityState;
 }
 
 export type Person = {
@@ -52,6 +52,7 @@ export interface IWidgetProps {
   info: IKeyValue;
   fieldConfig: IFieldConfig;
   fieldConfigs: IFieldConfig[];
+  renderers: TRenderFunc[];
 }
 
 type TFunctionType = () => void;
@@ -71,9 +72,9 @@ export interface IAction {
 }
 
 export interface IColumnExtra {
-  withSelection: boolean;
-  withIndex: boolean;
-  actions: IAction[];
+  withSelection?: boolean;
+  withIndex?: boolean;
+  actions?: IAction[];
 }
 
 export interface ITablePagination {
@@ -87,3 +88,5 @@ export interface IHeaderGroup {
   label?: string;
   children?: IHeaderGroup[];
 }
+
+export type TRenderFunc = (props: IWidgetProps) => React.ReactNode
