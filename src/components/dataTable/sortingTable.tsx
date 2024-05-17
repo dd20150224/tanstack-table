@@ -118,74 +118,72 @@ const SortingTable = ({
 
   console.log('sortingTable - render')
   return (
-    <>
-      <div>
-        <div
-          style={{
-            width: '480px',
-            margin: '5px 0',
-            backgroundColor: 'paleturquoise',
-            display: 'inline-block',
-            textAlign: 'left',
-            height: '200px',
-          }}
+    <div className="p-2 w-full h-full flex flex-col bg-red-400">
+      <div className="flex flex-col items-center w-full grow-0">
+        <div 
+          className="p-2 w-[480px] my-1 mx-0 inline-block text-left h-[200px]"
+          style={{backgroundColor: 'paleturquoise'}}
         >
           <pre>{JSON.stringify(sorting, null, 2)}</pre>
           <div>#1: {finalData[0]?.first_name}</div>
           <div>#2: {finalData[1]?.first_name}</div>
         </div>
       </div>
-      <table>
-        <thead>
-          {tableInstance.getHeaderGroups().map((header) => {
-            return (
-              <tr key={header.id}>
-                {header.headers.map((column) => {
-                  return (
-                    <th
-                      key={column.id}
-                      colSpan={column.colSpan}
-                      style={{ cursor: 'pointer' }}
-                      onClick={column.column.getToggleSortingHandler()}
-                    >
-                      {column.isPlaceholder
-                        ? null
-                        : flexRender(
-                            column.column.columnDef.header,
-                            column.getContext()
+      <div className="grow w-full bg-green-500 p-1 flex flex-col">
+        <div className="h-0 min-h-full w-full overflow-x-scroll overflow-y-scroll">
+          <table className="tanstack-table grow w-full">
+            <thead>
+              {tableInstance.getHeaderGroups().map((header) => {
+                return (
+                  <tr key={header.id}>
+                    {header.headers.map((column) => {
+                      return (
+                        <th
+                          key={column.id}
+                          colSpan={column.colSpan}
+                          style={{ cursor: 'pointer' }}
+                          onClick={column.column.getToggleSortingHandler()}
+                        >
+                          {column.isPlaceholder
+                            ? null
+                            : flexRender(
+                                column.column.columnDef.header,
+                                column.getContext()
+                              )}
+                          {/* CODE FOR UP AND DOWN SORTING */}
+                          {{
+                            asc: ' 🔼',
+                            desc: ' 🔽',
+                          }[column.column.getIsSorted() as string] ?? null}
+                        </th>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </thead>
+            <tbody>
+              {tableInstance.getRowModel().rows.map((row) => {
+                return (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <td key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                      {/* CODE FOR UP AND DOWN SORTING */}
-                      {{
-                        asc: ' 🔼',
-                        desc: ' 🔽',
-                      }[column.column.getIsSorted() as string] ?? null}
-                    </th>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </thead>
-        <tbody>
-          {tableInstance.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </>
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 
 // import BasicTable from './components/basicTable';
@@ -9,7 +9,7 @@ import { tableConfig } from './config/table';
 import { DataProvider, IGetDataPayload } from './hooks/useTableData';
 import { IKeyValue } from './config/types';
 import dataJSON from './data/data.json';
-import FollowingDot from './components/followingDot/followingDot';
+import { SortingState } from '@tanstack/react-table';
 
 const doSorting = async (data: IKeyValue[], sorting: SortingState): Promise<IKeyValue[]> => {
   if (sorting.length > 0) {
@@ -55,11 +55,9 @@ function App() {
 
   return (
     <div className="w-screen h-screen bg-green-200 flex flex-col">
-      <div className="w-full">Table: App</div>
       {/* <BasicTable/> */}
       <DataProvider getData={getData}>
-        <FollowingDot/>
-        {/* <SortingTable tableConfig={tableConfig}/> */}
+        <SortingTable tableConfig={tableConfig}/>
       </DataProvider>
     </div>
   )

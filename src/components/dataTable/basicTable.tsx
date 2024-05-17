@@ -19,7 +19,7 @@ export default function BasicTable() {
 
   console.log('test: ', table.getHeaderGroups());
   return (
-    <table style={{ width: '100%' }}>
+    <table className="tanstack-table" style={{ width: '100%' }}>
       <thead>
         {table.getHeaderGroups().map((headerEl) => (
           <tr key={headerEl.id}>
